@@ -1,0 +1,22 @@
+{
+  "name": "study-sync-campus",
+  "version": "1.0.0",
+  "description": "StudySync Campus Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "prettier": "^3.0.0",
+    "eslint": "^8.45.0"
+  }
+}
