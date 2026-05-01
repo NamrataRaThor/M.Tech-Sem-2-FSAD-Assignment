@@ -3,9 +3,9 @@ import { Skeleton } from '../components/ui/Skeleton';
 import { useProfile, useFeed, useBookings } from '../hooks/useQueries';
 
 export function Dashboard() {
-  const { data: profileData, isLoading: profileLoading } = useProfile();
-  const { data: feedData, isLoading: feedLoading } = useFeed();
-  const { data: bookingsData, isLoading: bookingsLoading } = useBookings();
+  const { data: profileData, isLoading: profileLoading, isError: profileError } = useProfile();
+  const { data: feedData, isLoading: feedLoading, isError: feedError } = useFeed();
+  const { data: bookingsData, isLoading: bookingsLoading, isError: bookingsError } = useBookings();
 
   if (profileLoading || feedLoading || bookingsLoading) {
     return (
@@ -18,6 +18,20 @@ export function Dashboard() {
           <Skeleton className="h-64 col-span-1 md:col-span-2 lg:col-span-2 rounded-2xl" />
           <Skeleton className="h-64 rounded-2xl" />
         </div>
+      </div>
+    );
+  }
+
+  if (profileError || feedError || bookingsError) {
+    return (
+      <div className="flex-1 flex items-center justify-center pt-20">
+        <GlassCard className="max-w-md text-center p-8 border-red-500/20">
+          <h2 className="text-2xl font-light text-red-400 mb-4">Connection Lost</h2>
+          <p className="text-champagne/60 font-light text-sm">We couldn't connect to the StudySync servers. Please refresh the dream.</p>
+          <button onClick={() => window.location.reload()} className="mt-6 px-6 py-2 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors">
+            Reconnect
+          </button>
+        </GlassCard>
       </div>
     );
   }

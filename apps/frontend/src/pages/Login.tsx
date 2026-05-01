@@ -6,43 +6,72 @@ import { Link, useNavigate } from 'react-router-dom';
 export function Login() {
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // mock login flow
-    navigate('/dashboard');
+    setError('');
+    setIsLoading(true);
+    
+    // Mock login delay and validation
+    setTimeout(() => {
+      const email = (e.target as any).email.value;
+      const password = (e.target as any).password.value;
+      
+      if (!email || !password) {
+        setError('Please enter both email and password.');
+        setIsLoading(false);
+        return;
+      }
+      
+      navigate('/dashboard');
+    }, 1000);
   };
 
   return (
     <div className="flex-1 flex items-center justify-center pt-20 px-4">
-      <GlassCard className="w-full max-w-md p-8">
+      <GlassCard className="w-full max-w-md p-10 border-bronze/10">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-          <h2 className="text-3xl font-bold mb-2">Welcome Back</h2>
-          <p className="text-foreground/60 mb-8">Sign in to continue to StudySync.</p>
+          <h2 className="text-4xl font-extralight tracking-tight text-champagne mb-2">Welcome Back</h2>
+          <p className="text-champagne/40 text-sm font-light tracking-wide mb-8">Enter the dream.</p>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-6" noValidate>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Email</label>
+              <label htmlFor="email" className="text-xs font-light tracking-[0.2em] uppercase text-bronze">Email</label>
               <input 
+                id="email"
+                name="email"
                 type="email" 
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent-purple/50 transition-all text-white placeholder:text-white/30"
+                required
+                aria-required="true"
+                className="w-full bg-charcoal/50 border border-bronze/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-gold/50 transition-all text-champagne placeholder:text-champagne/20 font-light"
                 placeholder="you@university.edu"
               />
             </div>
             
             <div className="space-y-2">
-              <label className="text-sm font-medium">Password</label>
+              <label htmlFor="password" className="text-xs font-light tracking-[0.2em] uppercase text-bronze">Password</label>
               <input 
+                id="password"
+                name="password"
                 type="password" 
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent-purple/50 transition-all text-white placeholder:text-white/30"
+                required
+                aria-required="true"
+                className="w-full bg-charcoal/50 border border-bronze/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-gold/50 transition-all text-champagne placeholder:text-champagne/20 font-light"
                 placeholder="••••••••"
               />
             </div>
 
-            <Button type="submit" className="w-full mt-6" size="lg">Sign In</Button>
+            {error && <p className="text-red-400 text-xs tracking-wide" role="alert">{error}</p>}
+
+            <Button type="submit" className="w-full mt-8 tracking-widest" size="lg" disabled={isLoading}>
+              {isLoading ? 'Authenticating...' : 'Sign In'}
+            </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-foreground/60">
-            Don't have an account? <Link to="/signup" className="text-accent-cyan hover:underline">Sign up</Link>
+          <p className="mt-8 text-center text-xs text-champagne/40 tracking-wide font-light">
+            Don't have an account? <Link to="/signup" className="text-gold hover:text-champagne transition-colors">Sign up</Link>
           </p>
         </motion.div>
       </GlassCard>
