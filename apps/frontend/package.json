@@ -11,16 +11,19 @@
   },
   "dependencies": {
     "@studysync/shared": "*",
+    "@tanstack/react-query": "^5.100.7",
     "axios": "^1.4.0",
+    "clsx": "^1.2.1",
+    "date-fns": "^4.1.0",
     "framer-motion": "^10.12.16",
     "gsap": "^3.12.2",
+    "lucide-react": "^0.260.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.2",
-    "zustand": "^4.3.9",
-    "lucide-react": "^0.260.0",
-    "clsx": "^1.2.1",
-    "tailwind-merge": "^1.14.0"
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^1.14.0",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
