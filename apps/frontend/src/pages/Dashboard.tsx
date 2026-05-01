@@ -28,46 +28,47 @@ export function Dashboard() {
   const nextBooking = bookings.length > 0 ? bookings[0] : null;
 
   return (
-    <div className="space-y-6 pb-20">
-      <header className="mb-8">
-        <h1 className="text-4xl font-bold">Good evening, {profile.userId || 'Student'}.</h1>
-        <p className="text-foreground/60 mt-2">Here is your study overview.</p>
-        {profile.bio && <p className="text-sm text-foreground/40 mt-1">Bio: {profile.bio}</p>}
+    <div className="space-y-10 pb-20">
+      <header className="mb-12">
+        <h1 className="text-5xl font-extralight tracking-tight text-gradient">Good evening, {profile.userId || 'Student'}.</h1>
+        <p className="text-champagne/40 mt-3 font-light tracking-widest uppercase text-xs">Architecting your study flow.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <GlassCard delay={0.1} className="col-span-1 md:col-span-2 lg:col-span-2 h-64 border-accent-cyan/20 flex flex-col justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <GlassCard delay={0.1} className="col-span-1 md:col-span-2 lg:col-span-2 h-72 border-bronze/10 flex flex-col justify-between p-10">
           <div>
-            <h2 className="text-xl font-semibold mb-4">Upcoming Session</h2>
+            <h2 className="text-xs font-light tracking-[0.3em] uppercase text-bronze mb-8">Upcoming Session</h2>
             {nextBooking ? (
-              <div className="space-y-2">
-                <p className="text-3xl font-light">Resource: {nextBooking.resource?.name || nextBooking.resourceId}</p>
-                <p className="text-foreground/60">
-                  {new Date(nextBooking.startTime).toLocaleString()} - {new Date(nextBooking.endTime).toLocaleString()}
+              <div className="space-y-4">
+                <p className="text-4xl md:text-5xl font-extralight tracking-tight text-champagne">
+                  {nextBooking.resource?.name || nextBooking.resourceId}
+                </p>
+                <p className="text-champagne/40 font-light tracking-wide">
+                  {new Date(nextBooking.startTime).toLocaleString()} — {new Date(nextBooking.endTime).toLocaleString()}
                 </p>
               </div>
             ) : (
-              <p className="text-foreground/60 italic">No upcoming sessions. Book a room to get started!</p>
+              <p className="text-champagne/40 italic font-light">No upcoming sessions. Define your path.</p>
             )}
           </div>
         </GlassCard>
         
-        <GlassCard delay={0.2} className="h-64 overflow-y-auto">
-          <h2 className="text-xl font-semibold mb-4">Activity Feed</h2>
+        <GlassCard delay={0.2} className="h-72 overflow-y-auto p-10">
+          <h2 className="text-xs font-light tracking-[0.3em] uppercase text-gold mb-8">Activity Feed</h2>
           {feed.length > 0 ? (
-            <ul className="space-y-4">
+            <ul className="space-y-6">
               {feed.slice(0, 5).map((activity: any) => (
-                <li key={activity.id} className="flex items-center gap-3 border-b border-white/5 pb-2">
-                  <div className="w-2 h-2 rounded-full bg-accent-purple" />
+                <li key={activity.id} className="flex items-center gap-4 border-b border-white/5 pb-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-gold/50 shadow-[0_0_8px_rgba(212,175,55,0.4)]" />
                   <div>
-                    <p className="text-sm">{activity.action}</p>
-                    <p className="text-xs text-foreground/40">{new Date(activity.createdAt).toLocaleDateString()}</p>
+                    <p className="text-sm font-light text-champagne/80">{activity.action}</p>
+                    <p className="text-[10px] font-light tracking-widest uppercase text-champagne/30 mt-1">{new Date(activity.createdAt).toLocaleDateString()}</p>
                   </div>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="text-foreground/60 italic text-sm">No recent activity.</p>
+            <p className="text-champagne/40 italic text-sm font-light">The silence of progress.</p>
           )}
         </GlassCard>
       </div>

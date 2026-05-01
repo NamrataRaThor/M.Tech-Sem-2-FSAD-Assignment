@@ -7,12 +7,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#09090b', // zinc-950
-        foreground: '#fafafa', // zinc-50
+        charcoal: '#0a0a0a',
+        champagne: '#f8f3f2',
+        bronze: '#af825d',
+        gold: '#d4af37',
+        background: '#0a0a0a',
+        foreground: '#f8f3f2',
         accent: {
-          cyan: '#06b6d4',
-          purple: '#a855f7',
-          pink: '#ec4899',
+          cyan: '#af825d', // Mapping bronze to cyan slot for compatibility
+          purple: '#d4af37', // Mapping gold to purple slot for compatibility
+          pink: '#f8f3f2', // Mapping champagne to pink slot for compatibility
         }
       },
       animation: {
