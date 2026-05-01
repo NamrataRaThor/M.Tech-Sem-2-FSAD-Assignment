@@ -1,0 +1,15 @@
+{
+  "title": "Where Colors Dream - A coloring book for dreamers and drifters",
+  "fontFamily": "JosefinSansLight",
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "detectedColors": [
+    "rgb(0, 0, 0)",
+    "rgb(175, 130, 93)",
+    "rgba(255, 255, 255, 0.9)",
+    "rgb(248, 243, 242)"
+  ],
+  "detectedFonts": [
+    "JosefinSansLight"
+  ],
+  "metaDescription": "interactive coloring book"
+}
