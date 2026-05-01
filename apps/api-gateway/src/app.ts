@@ -31,6 +31,18 @@ app.use('/api/groups', createProxyMiddleware({
   changeOrigin: true,
 }));
 
+// Booking Service Proxy
+app.use('/api/bookings', createProxyMiddleware({
+  target: process.env.BOOKING_SERVICE_URL || 'http://localhost:3004',
+  changeOrigin: true,
+}));
+
+// Notification Service Proxy
+app.use('/api/notifications', createProxyMiddleware({
+  target: process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3005',
+  changeOrigin: true,
+}));
+
 app.get('/health', (req, res) => res.json({ status: 'Gateway is running' }));
 
 export default app;

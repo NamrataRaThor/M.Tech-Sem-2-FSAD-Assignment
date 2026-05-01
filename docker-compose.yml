@@ -37,10 +37,14 @@ services:
       - AUTH_SERVICE_URL=http://auth-service:3001
       - USER_SERVICE_URL=http://user-service:3002
       - GROUP_SERVICE_URL=http://group-service:3003
+      - BOOKING_SERVICE_URL=http://booking-service:3004
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3005
     depends_on:
       - auth-service
       - user-service
       - group-service
+      - booking-service
+      - notification-service
     networks:
       - studysync-net
 
@@ -71,6 +75,26 @@ services:
     container_name: studysync-group-service
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=groups
+    depends_on:
+      - postgres
+    networks:
+      - studysync-net
+
+  booking-service:
+    build: ./apps/booking-service
+    container_name: studysync-booking-service
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=bookings
+    depends_on:
+      - postgres
+    networks:
+      - studysync-net
+
+  notification-service:
+    build: ./apps/notification-service
+    container_name: studysync-notification-service
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=notifications
     depends_on:
       - postgres
     networks:
