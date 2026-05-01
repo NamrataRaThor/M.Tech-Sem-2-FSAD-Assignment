@@ -15,8 +15,14 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.1",
+    "@typescript-eslint/parser": "^8.59.1",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^8.0.3",
-    "prettier": "^3.0.0",
-    "eslint": "^8.45.0"
+    "playwright": "^1.40.0",
+    "prettier": "^3.0.0"
   }
 }
