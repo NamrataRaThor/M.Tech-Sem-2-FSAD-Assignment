@@ -1,18 +1,26 @@
-import React from 'react'
+import { Routes, Route } from 'react-router-dom';
+import { RootLayout } from './layouts/RootLayout';
+import { DashboardLayout } from './layouts/DashboardLayout';
+import { Landing } from './pages/Landing';
+import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
+import { Dashboard } from './pages/Dashboard';
 
 function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
-      <div className="p-8 rounded-2xl bg-surface backdrop-blur-md border border-white/10 shadow-2xl">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-          Welcome to StudySync Campus
-        </h1>
-        <p className="mt-4 text-gray-400">
-          Cinematic AI-enhanced collaboration platform.
-        </p>
-      </div>
-    </div>
-  )
+    <Routes>
+      <Route element={<RootLayout />}>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Route>
+      
+      <Route element={<DashboardLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        {/* other nested routes would go here */}
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
