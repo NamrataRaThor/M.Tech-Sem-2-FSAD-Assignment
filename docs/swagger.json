@@ -1,29 +1,29 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "StudySync Campus API",
+    "title": "School Equipment Lending Portal API",
     "version": "1.0.0",
-    "description": "Unified API Gateway for StudySync Campus microservices."
+    "description": "API for managing school equipment inventory and lending requests."
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
-      "description": "Local API Gateway"
+      "url": "http://localhost:3000/api",
+      "description": "Local Development Server"
     }
   ],
   "components": {
     "securitySchemes": {
-      "cookieAuth": {
-        "type": "apiKey",
-        "in": "cookie",
-        "name": "jwt"
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   },
   "paths": {
-    "/api/auth/signup": {
+    "/auth/signup": {
       "post": {
-        "summary": "Sign up a new user",
+        "summary": "Register a new user",
         "tags": ["Auth"],
         "requestBody": {
           "required": true,
@@ -32,77 +32,65 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string", "format": "email" },
-                  "password": { "type": "string", "minLength": 6 }
-                },
-                "required": ["email", "password"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": { "description": "User created" }
-        }
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "summary": "Log in",
-        "tags": ["Auth"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": { "type": "string", "format": "email" },
-                  "password": { "type": "string" }
-                },
-                "required": ["email", "password"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": { "description": "Logged in" }
-        }
-      }
-    },
-    "/api/users/profile": {
-      "get": {
-        "summary": "Get user profile",
-        "tags": ["Users"],
-        "security": [{ "cookieAuth": [] }],
-        "responses": {
-          "200": { "description": "Profile data" },
-          "401": { "description": "Unauthorized" }
-        }
-      }
-    },
-    "/api/bookings": {
-      "post": {
-        "summary": "Create a booking",
-        "tags": ["Bookings"],
-        "security": [{ "cookieAuth": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "resourceId": { "type": "string" },
-                  "startTime": { "type": "string", "format": "date-time" },
-                  "endTime": { "type": "string", "format": "date-time" }
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "role": { "type": "string", "enum": ["STUDENT", "STAFF", "ADMIN"] }
                 }
               }
             }
           }
         },
-        "responses": {
-          "201": { "description": "Booking created" }
-        }
+        "responses": { "201": { "description": "User created" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Authenticate user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Token issued" } }
+      }
+    },
+    "/equipment": {
+      "get": {
+        "summary": "List all equipment",
+        "tags": ["Inventory"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "summary": "Add equipment (Staff/Admin)",
+        "tags": ["Inventory"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/requests": {
+      "get": {
+        "summary": "View lending requests",
+        "tags": ["Lending"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "summary": "Request an item",
+        "tags": ["Lending"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "201": { "description": "Request submitted" } }
       }
     }
   }

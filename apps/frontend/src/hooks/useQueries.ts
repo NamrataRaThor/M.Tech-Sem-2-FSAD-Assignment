@@ -6,6 +6,7 @@ export const useProfile = () => {
   return useQuery({
     queryKey: ['profile'],
     queryFn: () => api.get('/users/profile'),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
 
@@ -19,70 +20,81 @@ export const useUpdateProfile = () => {
   });
 };
 
-export const useFeed = () => {
-  return useQuery({
-    queryKey: ['feed'],
-    queryFn: () => api.get('/users/feed'),
+export const useLogin = () => {
+  return useMutation({
+    mutationFn: (data: any) => api.post('/auth/login', data),
   });
 };
 
-// --- GROUPS ---
-export const useGroups = () => {
-  return useQuery({
-    queryKey: ['groups'],
-    queryFn: () => api.get('/groups'),
+export const useSignup = () => {
+  return useMutation({
+    mutationFn: (data: any) => api.post('/auth/signup', data),
   });
 };
 
-export const useCreateGroup = () => {
+// --- EQUIPMENT ---
+export const useEquipmentList = () => {
+  return useQuery({
+    queryKey: ['equipment'],
+    queryFn: () => api.get('/equipment'),
+  });
+};
+
+export const useCreateEquipment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) => api.post('/groups', data),
+    mutationFn: (data: any) => api.post('/equipment', data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['groups'] });
+      queryClient.invalidateQueries({ queryKey: ['equipment'] });
     },
   });
 };
 
-// --- BOOKINGS ---
-export const useResources = () => {
-  return useQuery({
-    queryKey: ['resources'],
-    queryFn: () => api.get('/bookings/resources'),
-  });
-};
-
-export const useBookings = () => {
-  return useQuery({
-    queryKey: ['bookings'],
-    queryFn: () => api.get('/bookings'),
-  });
-};
-
-export const useCreateBooking = () => {
+export const useUpdateEquipment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: any) => api.post('/bookings', data),
+    mutationFn: ({ id, data }: { id: string, data: any }) => api.put(`/equipment/${id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      queryClient.invalidateQueries({ queryKey: ['equipment'] });
     },
   });
 };
 
-// --- NOTIFICATIONS ---
-export const useNotifications = () => {
-  return useQuery({
-    queryKey: ['notifications'],
-    queryFn: () => api.get('/notifications'),
+export const useDeleteEquipment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.delete(`/equipment/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equipment'] });
+    },
   });
 };
 
-export const useMarkAsRead = () => {
+// --- REQUESTS ---
+export const useRequests = () => {
+  return useQuery({
+    queryKey: ['requests'],
+    queryFn: () => api.get('/requests'),
+  });
+};
+
+export const useCreateRequest = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => api.put(`/notifications/${id}/read`),
+    mutationFn: (data: any) => api.post('/requests', data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
+    },
+  });
+};
+
+export const useUpdateRequestStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, status }: { id: string, status: string }) => 
+      api.patch(`/requests/${id}/status`, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['requests'] });
     },
   });
 };

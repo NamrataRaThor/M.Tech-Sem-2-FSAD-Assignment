@@ -19,21 +19,21 @@ export function AnimatedBackground() {
       <motion.div
         animate={{
           scale: [1, 1.2, 1],
-          opacity: [0.1, 0.2, 0.1],
+          opacity: [0.08, 0.15, 0.08],
           rotate: [0, 5, 0],
         }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-1/4 -left-1/4 w-[120%] h-[120%] bg-gradient-to-br from-bronze/20 via-transparent to-gold/10 filter blur-[150px]"
+        transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -top-1/4 -left-1/4 w-[120%] h-[120%] bg-gradient-to-br from-bronze/20 via-transparent to-gold/10 filter blur-[200px]"
       />
       
       <motion.div
         animate={{
           scale: [1.2, 1, 1.2],
-          opacity: [0.1, 0.15, 0.1],
+          opacity: [0.08, 0.12, 0.08],
           rotate: [0, -5, 0],
         }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -bottom-1/4 -right-1/4 w-[120%] h-[120%] bg-gradient-to-tl from-gold/15 via-transparent to-bronze/10 filter blur-[150px]"
+        transition={{ duration: 50, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -bottom-1/4 -right-1/4 w-[120%] h-[120%] bg-gradient-to-tl from-gold/15 via-transparent to-bronze/10 filter blur-[200px]"
       />
     </div>
   );

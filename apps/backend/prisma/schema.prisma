@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String           @id @default(uuid())
+  email        String           @unique
+  name         String
+  passwordHash String
+  role         Role             @default(STUDENT)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  requests     LendingRequest[]
+  RefreshToken RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Equipment {
+  id          String           @id @default(uuid())
+  name        String
+  category    String
+  condition   String
+  quantity    Int              @default(1)
+  isAvailable Boolean          @default(true)
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  requests    LendingRequest[]
+
+  @@map("equipment")
+}
+
+model LendingRequest {
+  id          String        @id @default(uuid())
+  userId      String
+  equipmentId String
+  status      RequestStatus @default(PENDING)
+  requestDate DateTime      @default(now())
+  returnDate  DateTime?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  equipment   Equipment     @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([equipmentId])
+  @@map("lending_requests")
+}
+
+enum Role {
+  STUDENT
+  STAFF
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  RETURNED
+}

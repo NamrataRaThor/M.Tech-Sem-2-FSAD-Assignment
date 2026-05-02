@@ -1,32 +1,41 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLogin } from '../hooks/useQueries';
+import { useAuth } from '../context/AuthContext';
 
 export function Login() {
   const navigate = useNavigate();
+  const loginMutation = useLogin();
+  const { login } = useAuth();
 
-  const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setIsLoading(true);
     
-    // Mock login delay and validation
-    setTimeout(() => {
-      const email = (e.target as any).email.value;
-      const password = (e.target as any).password.value;
-      
-      if (!email || !password) {
-        setError('Please enter both email and password.');
-        setIsLoading(false);
-        return;
+    const email = (e.target as any).email.value;
+    const password = (e.target as any).password.value;
+    
+    if (!email || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+
+    try {
+      const response: any = await loginMutation.mutateAsync({ email, password });
+      if (response.data?.accessToken && response.data?.user) {
+        login(response.data.user, response.data.accessToken);
+        navigate('/dashboard');
+      } else {
+        throw new Error('No access token or user received');
       }
-      
-      navigate('/dashboard');
-    }, 1000);
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    }
   };
 
   return (
@@ -65,8 +74,8 @@ export function Login() {
 
             {error && <p className="text-red-400 text-xs tracking-wide" role="alert">{error}</p>}
 
-            <Button type="submit" className="w-full mt-8 tracking-widest" size="lg" disabled={isLoading}>
-              {isLoading ? 'Authenticating...' : 'Sign In'}
+            <Button type="submit" className="w-full mt-8 tracking-widest" size="lg" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? 'Authenticating...' : 'Sign In'}
             </Button>
           </form>
 

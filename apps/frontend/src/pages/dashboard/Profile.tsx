@@ -7,6 +7,7 @@ import { useProfile, useUpdateProfile } from '../../hooks/useQueries';
 export function Profile() {
   const { data, isLoading } = useProfile();
   const updateProfile = useUpdateProfile();
+  const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [major, setMajor] = useState('');
   const [saved, setSaved] = useState(false);
@@ -16,7 +17,7 @@ export function Profile() {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     updateProfile.mutate(
-      { bio: bio || profile?.bio, major: major || profile?.major },
+      { name: name || profile?.name, bio: bio || profile?.bio, major: major || profile?.major },
       { onSuccess: () => { setSaved(true); setTimeout(() => setSaved(false), 2000); } }
     );
   };
@@ -41,10 +42,10 @@ export function Profile() {
         {/* Avatar / Identity Card */}
         <GlassCard delay={0.1} className="flex flex-col items-center text-center gap-4 py-10">
           <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-accent-cyan to-accent-purple flex items-center justify-center text-3xl font-bold text-background shadow-[0_0_30px_rgba(168,85,247,0.4)]">
-            {(profile?.userId || 'U').charAt(0).toUpperCase()}
+            {(profile?.name || 'S').charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="text-xl font-semibold">{profile?.userId || 'Student'}</p>
+            <p className="text-xl font-semibold">{profile?.name || 'Student'}</p>
             <p className="text-sm text-foreground/50">{profile?.major || 'No major set'}</p>
           </div>
           <div className="w-full border-t border-white/10 pt-4">
@@ -56,6 +57,16 @@ export function Profile() {
         <GlassCard delay={0.2} className="lg:col-span-2 p-8">
           <h2 className="text-xl font-semibold mb-6">Edit Profile</h2>
           <form onSubmit={handleSave} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Display Name</label>
+              <input
+                type="text"
+                defaultValue={profile?.name || ''}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent-purple/50 text-white placeholder:text-white/30"
+                placeholder="How should we call you?"
+              />
+            </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Bio</label>
               <textarea

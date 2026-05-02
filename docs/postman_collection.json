@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "StudySync Campus API",
-    "description": "Postman Collection for StudySync microservices. Note: Login endpoint sets an HttpOnly cookie automatically used by subsequent requests in Postman.",
+    "name": "School Equipment Lending Portal API",
+    "description": "Postman Collection for Equipment Portal. Use the 'accessToken' from Login in the Authorization tab as a Bearer Token.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -9,13 +9,13 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Sign Up",
+          "name": "Signup",
           "request": {
             "method": "POST",
             "header": [ { "key": "Content-Type", "value": "application/json" } ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"test@student.edu\",\n  \"password\": \"password123\"\n}"
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@university.edu\",\n  \"password\": \"password123\",\n  \"role\": \"STUDENT\"\n}"
             },
             "url": { "raw": "http://localhost:3000/api/auth/signup", "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [ "api", "auth", "signup" ] }
           }
@@ -27,7 +27,7 @@
             "header": [ { "key": "Content-Type", "value": "application/json" } ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"test@student.edu\",\n  \"password\": \"password123\"\n}"
+              "raw": "{\n  \"email\": \"john@university.edu\",\n  \"password\": \"password123\"\n}"
             },
             "url": { "raw": "http://localhost:3000/api/auth/login", "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [ "api", "auth", "login" ] }
           }
@@ -35,14 +35,31 @@
       ]
     },
     {
-      "name": "Users",
+      "name": "Equipment",
       "item": [
         {
-          "name": "Get Profile",
+          "name": "List Equipment",
           "request": {
             "method": "GET",
             "header": [],
-            "url": { "raw": "http://localhost:3000/api/users/profile", "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [ "api", "users", "profile" ] }
+            "url": { "raw": "http://localhost:3000/api/equipment", "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [ "api", "equipment" ] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Requests",
+      "item": [
+        {
+          "name": "Submit Lending Request",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"equipmentId\": \"uuid-here\",\n  \"notes\": \"For experiment\"\n}"
+            },
+            "url": { "raw": "http://localhost:3000/api/requests", "protocol": "http", "host": [ "localhost" ], "port": "3000", "path": [ "api", "requests" ] }
           }
         }
       ]

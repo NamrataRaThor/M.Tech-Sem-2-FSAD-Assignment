@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Button } from './Button';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useAuth } from '../../context/AuthContext';
 
 export function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
   const { scrollY } = useScroll();
   const background = useTransform(
     scrollY,
@@ -22,25 +24,42 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-accent-cyan to-accent-purple flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-shadow">
-            <div className="w-3 h-3 bg-background rounded-full" />
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-bronze to-gold flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-shadow">
+            <div className="w-3 h-3 bg-charcoal rounded-full" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-foreground">StudySync</span>
+          <span className="text-xl font-extralight tracking-tighter text-champagne">Equipment Portal</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="#features" className="text-sm text-foreground/70 hover:text-foreground transition-colors">Features</Link>
-          <Link to="#community" className="text-sm text-foreground/70 hover:text-foreground transition-colors">Community</Link>
-          <Link to="#pricing" className="text-sm text-foreground/70 hover:text-foreground transition-colors">Pricing</Link>
+          <Link to="/" className="text-xs font-light tracking-widest uppercase text-champagne/40 hover:text-gold transition-colors">Home</Link>
+          {isAuthenticated && (
+            <Link to="/dashboard" className="text-xs font-light tracking-widest uppercase text-champagne/40 hover:text-gold transition-colors">Dashboard</Link>
+          )}
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link to="/login">
-            <Button variant="ghost">Sign In</Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="primary">Get Started</Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard/profile">
+                <Button variant="ghost">Profile</Button>
+              </Link>
+              <Button 
+                variant="primary" 
+                onClick={logout}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost">Sign In</Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="primary">Get Started</Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </motion.header>

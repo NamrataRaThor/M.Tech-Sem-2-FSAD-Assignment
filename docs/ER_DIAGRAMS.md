@@ -1,84 +1,56 @@
-# Entity Relationship Diagrams
+# Entity Relationship Diagram
 
-This document outlines the data schemas and their relationships across the microservices. While each microservice manages its own logical domain, they reference common keys (like `userId`).
+This document outlines the database schema and relationships for the School Equipment Lending Portal.
 
-## Unified ERD Map
+## Database Schema (Prisma)
 
 ```mermaid
 erDiagram
-    User ||--o{ Profile : has
-    User ||--o{ ActivityFeed : generates
-    User ||--o{ GroupMember : belongs_to
-    User ||--o{ Booking : makes
-    User ||--o{ Notification : receives
-
-    Group ||--o{ GroupMember : contains
-    Resource ||--o{ Booking : booked_for
+    User ||--o{ LendingRequest : places
+    User ||--o{ RefreshToken : has
+    Equipment ||--o{ LendingRequest : included_in
 
     User {
         string id PK
-        string email
+        string email UK
+        string name
         string passwordHash
-        string role
+        enum role "STUDENT, STAFF, ADMIN"
         datetime createdAt
     }
 
-    Profile {
-        string id PK
-        string userId FK
-        string bio
-        string avatarUrl
-    }
-
-    ActivityFeed {
-        string id PK
-        string userId FK
-        string action
-        datetime createdAt
-    }
-
-    Group {
+    Equipment {
         string id PK
         string name
+        string category
+        string condition
+        int quantity
+        boolean isAvailable
         string description
+        datetime updatedAt
     }
 
-    GroupMember {
-        string id PK
-        string groupId FK
-        string userId FK
-        string role "ADMIN or MEMBER"
-    }
-
-    Resource {
-        string id PK
-        string name
-        string type "ROOM or EQUIPMENT"
-        int capacity
-    }
-
-    Booking {
+    LendingRequest {
         string id PK
         string userId FK
-        string resourceId FK
-        datetime startTime
-        datetime endTime
-        string status
+        string equipmentId FK
+        enum status "PENDING, APPROVED, REJECTED, RETURNED"
+        datetime requestDate
+        datetime returnDate
+        string notes
+        datetime updatedAt
     }
 
-    Notification {
+    RefreshToken {
         string id PK
+        string token UK
         string userId FK
-        string message
-        boolean read
-        datetime createdAt
+        datetime expiresAt
     }
 ```
 
-## Schema Domains
+## Core Relationships
 
-1. **Auth Service**: Owns the `User` table (credentials and identity).
-2. **User Service**: Owns `Profile` and `ActivityFeed`. Maps to `User.id`.
-3. **Group Service**: Owns `Group` and `GroupMember`.
-4. **Booking Service**: Owns `Resource` and `Booking`.
-5. **Notification Service**: Owns `Notification`.
+1.  **User -> LendingRequest (1:N)**: A user can submit multiple requests over time.
+2.  **Equipment -> LendingRequest (1:N)**: An item can be part of many lending requests throughout its lifecycle.
+3.  **User -> RefreshToken (1:N)**: A user can have multiple active sessions (tokens) across different devices.

@@ -1,29 +1,29 @@
-# QA Report: StudySync Campus
+# QA Report: School Equipment Lending Portal
 
 ## Overview
-A comprehensive static audit was performed on the StudySync Campus application to evaluate responsiveness, accessibility, loading states, and edge cases.
+A comprehensive audit was performed on the Equipment Portal to evaluate responsiveness, accessibility, loading states, and RBAC security.
 
 ## Test Coverage & Validation
 
-### 1. Accessibility (a11y)
-- **Status**: Improved.
-- **Findings**: The authentication flows (e.g., `Login.tsx`) were missing critical `aria-` labels and semantic `<label htmlFor="...">` associations.
-- **Resolution**: Implemented proper `id` bindings, `aria-required` tags, and `role="alert"` for error messages, ensuring screen reader compatibility during the login process.
-
-### 2. Responsiveness & Mobile
+### 1. Role-Based Access Control (RBAC)
 - **Status**: Passing.
-- **Findings**: Tailwind classes heavily utilize mobile-first paradigms. The grid layouts in the Dashboard (`grid-cols-1 md:grid-cols-2 lg:grid-cols-3`) naturally reflow.
-- **Resolution**: No major structural changes required. The "Dream Edition" typography scales properly using `text-7xl md:text-9xl`.
+- **Findings**: Verified that students cannot access the Management tab and that Staff members can correctly manage inventory.
+- **Resolution**: Updated backend routes to strictly enforce role checks.
 
-### 3. Loading States & UX
+### 2. Accessibility (a11y)
 - **Status**: Improved.
-- **Findings**: While data fetching had loading skeletons, form submissions (like Login) lacked loading indicators, allowing multiple submissions (race condition potential).
-- **Resolution**: Added `isLoading` state management to forms to disable submission buttons while requests are pending.
+- **Findings**: Form inputs in `Login.tsx` and `Signup.tsx` were updated with proper ARIA labels.
+- **Resolution**: Implemented semantic `<label>` associations for screen reader compatibility.
 
-### 4. API Edge Cases
+### 3. Loading States
+- **Status**: Passing.
+- **Findings**: Added skeleton loaders to the dashboard and management pages to prevent layout shift during data fetching.
+- **Resolution**: Integrated TanStack Query's `isLoading` states with premium skeleton components.
+
+### 4. Edge Cases & Errors
 - **Status**: Patched.
-- **Findings**: The `Dashboard.tsx` assumed the API would always return data successfully. If the backend microservices were down, the UI would crash or fail silently.
-- **Resolution**: Implemented an Error Boundary state (`isError`) using React Query to display a graceful "Connection Lost" UI with a reconnection prompt.
+- **Findings**: Handled "Forbidden" errors gracefully by showing user-friendly alerts when a role lacks permission.
+- **Resolution**: Improved error catching in the `useMutation` hooks.
 
 ## Conclusion
-The application is structurally sound. The UX is now resilient against network failures and compliant with basic web accessibility standards.
+The portal is stable, secure, and provides a seamless experience across all user roles.

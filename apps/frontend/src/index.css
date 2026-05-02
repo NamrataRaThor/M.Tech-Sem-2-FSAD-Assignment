@@ -13,10 +13,10 @@
 
 @layer utilities {
   .glass {
-    @apply bg-white/[0.03] backdrop-blur-2xl border border-white/5 shadow-2xl;
+    @apply bg-white/[0.02] backdrop-blur-[40px] border border-white/[0.08] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
   }
   .glass-bronze {
-    @apply bg-bronze/[0.05] backdrop-blur-2xl border border-bronze/10 shadow-2xl;
+    @apply bg-[#1a1715]/40 backdrop-blur-[50px] border border-bronze/10 shadow-[0_8px_32px_0_rgba(205,127,50,0.05)];
   }
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-br from-champagne via-champagne to-bronze/50;

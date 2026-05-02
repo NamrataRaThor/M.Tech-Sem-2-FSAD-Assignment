@@ -24,6 +24,14 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      // Only redirect if we are not already on login/signup/landing
+      const publicPaths = ['/login', '/signup', '/'];
+      if (!publicPaths.includes(window.location.pathname)) {
+        window.location.href = '/login';
+      }
+    }
     return Promise.reject(error.response?.data || error);
   }
 );

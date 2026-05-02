@@ -8,7 +8,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspaces --if-present",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=@studysync/backend",
+    "dev:frontend": "npm run dev --workspace=@studysync/frontend",
+    "prisma:generate": "npm run prisma:generate --workspace=@studysync/backend",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
@@ -18,6 +21,7 @@
     "@playwright/test": "^1.40.0",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
+    "concurrently": "^9.2.1",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
