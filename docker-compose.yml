@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: studysync-postgres
+    container_name: equipment-portal-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -13,95 +13,23 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - studysync-net
+      - portal-net
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: studysync-pgadmin
+    container_name: equipment-portal-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@studysync.com
+      PGADMIN_DEFAULT_EMAIL: admin@portal.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
     depends_on:
       - postgres
     networks:
-      - studysync-net
-
-  api-gateway:
-    build: ./apps/api-gateway
-    container_name: studysync-api-gateway
-    ports:
-      - "3000:3000"
-    environment:
-      - AUTH_SERVICE_URL=http://auth-service:3001
-      - USER_SERVICE_URL=http://user-service:3002
-      - GROUP_SERVICE_URL=http://group-service:3003
-      - BOOKING_SERVICE_URL=http://booking-service:3004
-      - NOTIFICATION_SERVICE_URL=http://notification-service:3005
-    depends_on:
-      - auth-service
-      - user-service
-      - group-service
-      - booking-service
-      - notification-service
-    networks:
-      - studysync-net
-
-  auth-service:
-    build: ./apps/auth-service
-    container_name: studysync-auth-service
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=auth
-      - JWT_ACCESS_SECRET=supersecret
-      - JWT_REFRESH_SECRET=supersecret
-    depends_on:
-      - postgres
-    networks:
-      - studysync-net
-
-  user-service:
-    build: ./apps/user-service
-    container_name: studysync-user-service
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=users
-    depends_on:
-      - postgres
-    networks:
-      - studysync-net
-
-  group-service:
-    build: ./apps/group-service
-    container_name: studysync-group-service
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=groups
-    depends_on:
-      - postgres
-    networks:
-      - studysync-net
-
-  booking-service:
-    build: ./apps/booking-service
-    container_name: studysync-booking-service
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=bookings
-    depends_on:
-      - postgres
-    networks:
-      - studysync-net
-
-  notification-service:
-    build: ./apps/notification-service
-    container_name: studysync-notification-service
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/studysync?schema=notifications
-    depends_on:
-      - postgres
-    networks:
-      - studysync-net
+      - portal-net
 
 networks:
-  studysync-net:
+  portal-net:
     driver: bridge
 
 volumes:

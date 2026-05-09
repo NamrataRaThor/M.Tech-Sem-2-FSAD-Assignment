@@ -2,6 +2,15 @@
 
 A streamlined, premium platform for managing and borrowing school equipment (lab gear, electronics, sports equipment, etc.).
 
+## 🎥 Demonstration Video
+**[https://drive.google.com/drive/u/0/folders/1hzNTQmuiM9Z_XwANAg0E3qyVuelGPv-k]**
+
+## 📌 Technical Scope & Constraints
+- **Authentication**: A simulated, simplified token-based JWT authentication is used.
+- **Data Persistence**: The application uses a local Dockerized PostgreSQL instance. It is assumed the evaluator will run `docker-compose up -d postgres` before starting the application.
+- **Roles**: Users are strictly categorized as `STUDENT`, `STAFF`, or `ADMIN`.
+- **Concurrency**: Basic checks prevent overlapping bookings for the same item quantity, but advanced race-condition locking is outside the current scope.
+
 ## Architecture
 - **Frontend**: React + Vite (Port 5174 in dev)
 - **Backend**: Consolidated Express.js Monolith (Port 3000)

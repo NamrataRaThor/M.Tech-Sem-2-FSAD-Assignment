@@ -1,7 +1,7 @@
 {
   "name": "@studysync/backend",
   "version": "1.0.0",
-  "description": "Monolithic Backend for StudySync",
+  "description": "Monolithic Backend for Equipment Portal",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",

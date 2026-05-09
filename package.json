@@ -1,7 +1,7 @@
 {
-  "name": "study-sync-campus",
+  "name": "equipment-lending-portal",
   "version": "1.0.0",
-  "description": "StudySync Campus Monorepo",
+  "description": "School Equipment Lending Portal Monorepo",
   "private": true,
   "workspaces": [
     "apps/*",
